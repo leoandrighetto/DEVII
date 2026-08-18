@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'api_um'
+    'api_um' #
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware', #
+    'django.middleware.security.SecurityMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,14 +53,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True #
 
 ROOT_URLCONF = 'backend_django.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR.parent / 'frontend_react' / 'dist'],
+        'DIRS': [BASE_DIR.parent / 'frontend_react' / 'dist'], #
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,10 +72,10 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/assets/'
+STATIC_URL = '/assets/' #
 
 STATICFILES_DIRS = [
-    BASE_DIR.parent / 'frontend_react' / 'dist' / 'assets',
+    BASE_DIR.parent / 'frontend_react' / 'dist' / 'assets', # 
 ]
 
 WSGI_APPLICATION = 'backend_django.wsgi.application'
