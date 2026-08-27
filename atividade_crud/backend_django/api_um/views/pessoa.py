@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 class PessoaViews():
 
-    @csrf_exempt
+    @csrf_exempt # desativa proteção contra ataques CSRF (cross-site request forgery)
     def listar_pessoas(self, request):
 
         pessoas = list(Pessoa.objects.values('id', 'nome', 'idade'))

@@ -5,13 +5,13 @@ function App() {
   const [pessoas, setPessoas] = useState([])
   const [nome, setNome] = useState('')
   const [idade, setIdade] = useState('')
-  const [editandoId, setEditandoId] = useState(null)
+  const [idEdicao, setIdEdicao] = useState(null)
   const [pessoaSelecionada, setPessoaSelecionada] = useState(null)
 
-  const API_BASE = 'http://localhost:8000/api_um/pessoas/'
+  const API_BASE_PESSOA = 'http://localhost:8000/api_um/pessoas/'
 
   const carregarPessoas = () => {
-    fetch(API_BASE)
+    fetch(API_BASE_PESSOA)
       .then(res => res.json())
       .then(data => setPessoas(data))
   }
@@ -20,22 +20,23 @@ function App() {
     carregarPessoas()
   }, [])
 
-  const handleSubmit = (e) => {
+  const criarPessoa = (e) => {
     e.preventDefault()
     const payload = { nome, idade: parseInt(idade) }
 
-    if (editandoId) {
-      fetch(`${API_BASE}editar_pessoa/${editandoId}/`, {
+    if (idEdicao) {
+      fetch(`${API_BASE_PESSOA}editar_pessoa/${idEdicao}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).then(() => {
-        setEditandoId(null)
+        setIdEdicao(null)
         limparForm()
         carregarPessoas()
       })
+      
     } else {
-      fetch(`${API_BASE}criar_pessoa/`, {
+      fetch(`${API_BASE_PESSOA}criar_pessoa/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -46,14 +47,14 @@ function App() {
     }
   }
 
-  const handleEditar = (pessoa) => {
-    setEditandoId(pessoa.id)
+  const editarPessoa = (pessoa) => {
+    setIdEdicao(pessoa.id)
     setNome(pessoa.nome)
     setIdade(pessoa.idade)
   }
 
-  const handleExcluir = (id) => {
-    fetch(`${API_BASE}excluir_pessoa/${id}/`, {
+  const excluir_pessoa = (id) => {
+    fetch(`${API_BASE_PESSOA}excluir_pessoa/${id}/`, {
       method: 'POST'
     }).then(() => {
       if (pessoaSelecionada?.id === id) setPessoaSelecionada(null)
@@ -62,7 +63,7 @@ function App() {
   }
 
   const handleLer = (id) => {
-    fetch(`${API_BASE}ler_pessoa/${id}/`)
+    fetch(`${API_BASE_PESSOA}ler_pessoa/${id}/`)
       .then(res => res.json())
       .then(data => setPessoaSelecionada(data))
   }
@@ -70,12 +71,12 @@ function App() {
   const limparForm = () => {
     setNome('')
     setIdade('')
-    setEditandoId(null)
+    setIdEdicao(null)
   }
 
   return (
     <div style={{ padding: '20px' }}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={criarPessoa}>
         <input 
           type="text" 
           placeholder="Nome" 
@@ -91,8 +92,8 @@ function App() {
           onChange={(e) => setIdade(e.target.value)} 
           required 
         />
-        <button type="submit">{editandoId ? 'Atualizar' : 'Criar'}</button>
-        {editandoId && <button type="button" onClick={limparForm}>Cancelar</button>}
+        <button type="submit">{idEdicao ? 'Atualizar' : 'Criar'}</button>
+        {idEdicao && <button type="button" onClick={limparForm}>Cancelar</button>}
       </form>
 
       {pessoaSelecionada && (
@@ -122,8 +123,8 @@ function App() {
               <td>{pessoa.idade}</td>
               <td>
                 <button onClick={() => handleLer(pessoa.id)}>Ver</button>
-                <button onClick={() => handleEditar(pessoa)}>Editar</button>
-                <button onClick={() => handleExcluir(pessoa.id)}>Excluir</button>
+                <button onClick={() => editarPessoa(pessoa)}>Editar</button>
+                <button onClick={() => excluir_pessoa(pessoa.id)}>Excluir</button>
               </td>
             </tr>
           ))}
